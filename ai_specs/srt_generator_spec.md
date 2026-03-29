@@ -14,7 +14,7 @@ Dart CLI tool for generating subtitle files. Uses the dart-create skill to scaff
 
 **Reference files examined:**
 - @../examples/example.md - Input markdown format
-- @../examples/example.srt - Expected SRT output format
+- @../srt_generator/test/example_for_testing.srt - Expected SRT output format
 </background>
 
 <user_flows>
@@ -103,8 +103,8 @@ Unit tests for:
 - Line NOT joining: `"Hello."` + `"World"` → `["Hello."]`, next starts fresh
 
 Integration test:
-- Run tool on `../examples/` files and verify output matches expected format
-- Compare generated SRT with `../examples/example.srt` for correctness
+- Run tool on `../examples/example` files and verify output matches expected format
+- Compare generated SRT with `../srt_generator/test/example_for_testing.srt` for correctness
 </validation>
 
 <done_when>
