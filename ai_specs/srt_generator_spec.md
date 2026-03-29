@@ -41,7 +41,7 @@ Error flows:
 4. Joins current line with next line when current line does NOT end with `.!?` AND does NOT contain HTML header tags (<h1>, <h2>, <h3>, <h4>, <h5>, <h6>)
 5. Splits joined text into individual sentences by `.!?` punctuation, but preserves multiple consecutive dots (e.g., "e.g.", "Mr.", "...") and only splits on the last dot in a sequence
 6. Strips leading dashes (`-`) from text after splitting by punctuation
-7. Calculates timestamp for each sentence within its line's time range - each sentence in a multi-sentence line shares the line's duration equally (e.g., 2 sentences in a 4-second span = 2 seconds each)
+7. Calculates timestamp for each sentence proportionally by word count within its line's time range - sentence duration is proportional to the number of words (e.g., 3 words and 1 word in a 4-second span = 3 seconds and 1 second)
 8. Converts all timestamps to SubRip format: `HH:MM:SS,mmm --> HH:MM:SS,mmm`
 9. Outputs properly formatted SRT file with sequential numbering
 
@@ -71,14 +71,14 @@ Error scenarios:
 </boundaries>
 
 <implementation>
-**Files to create:**
+**Files created:**
 - `./srt_generator/` - Dart project scaffolded via dart-create skill
 - `./srt_generator/bin/srt_generator.dart` - Entry point with argument parsing
-- `./cli/lib/srt_generator.dart` - Core SRT generation logic
-- `./cli/lib/audio_reader.dart` - MP3 duration extraction
-- `./cli/lib/markdown_parser.dart` - Markdown transcript parsing
-- `./cli/lib/timestamp_calculator.dart` - Timestamp calculation logic
-- `./cli/lib/srt_formatter.dart` - SRT file formatting
+- `./srt_generator/lib/srt_generator.dart` - Core SRT generation logic
+- `./srt_generator/lib/audio_reader.dart` - MP3 duration extraction
+- `./srt_generator/lib/markdown_parser.dart` - Markdown transcript parsing
+- `./srt_generator/lib/timestamp_calculator.dart` - Timestamp calculation logic
+- `./srt_generator/lib/srt_formatter.dart` - SRT file formatting
 
 **Patterns/Libraries:**
 - Use `mp3_info` or `audio_metadata_extractor` package for MP3 duration
@@ -115,5 +115,5 @@ Integration test:
 5. Leading dashes stripped from split sentence segments
 6. Incomplete sentences (no ending punctuation) joined with next line
 7. Unit tests pass for core parsing and calculation logic
-7. Error handling works for missing files and invalid input
+8. Error handling works for missing files and invalid input
 </done_when>

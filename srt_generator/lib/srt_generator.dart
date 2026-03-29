@@ -64,21 +64,28 @@ class SrtGenerator {
       final lineStartMs = current.timestampMs;
       final lineEndMs = next?.timestampMs ?? totalDuration;
       final lineDuration = lineEndMs - lineStartMs;
-      final sentenceDuration = (lineDuration / sentences.length).round();
 
-      for (int j = 0; j < sentences.length; j++) {
-        final startMs = lineStartMs + (j * sentenceDuration);
-        final endMs = j == sentences.length - 1
-            ? lineEndMs
-            : lineStartMs + ((j + 1) * sentenceDuration);
+      final totalWords = sentences.fold<int>(
+        0,
+        (sum, s) => sum + s.split(RegExp(r'\s+')).length,
+      );
+      if (totalWords == 0) continue;
+
+      int accumulatedTime = 0;
+      for (final sentence in sentences) {
+        final wordCount = sentence.split(RegExp(r'\s+')).length;
+        final sentenceDurationMs = (lineDuration * wordCount / totalWords)
+            .round();
 
         result.add(
           TimedSentence(
-            text: sentences[j],
-            startMs: startMs,
-            endMs: endMs,
+            text: sentence,
+            startMs: lineStartMs + accumulatedTime,
+            endMs: lineStartMs + accumulatedTime + sentenceDurationMs,
           ),
         );
+
+        accumulatedTime += sentenceDurationMs;
       }
     }
 
