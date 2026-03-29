@@ -6,10 +6,11 @@ Fix SRT generator timing mismatch. Generated timestamps don't match expected tes
 
 ## Context
 
-- **Status**: Implementation exists, tests pass, but output mismatch
-- **Issue**: Generated timestamps differ from `example_for_testing.srt`
-- **Expected**: Specific timing per test file
-- **Actual**: Character-count proportional within line duration
+- **Status**: COMPLETE
+- Fixed timing logic to use next unparsed line's timestamp
+- Fixed duration handling when timestamps exceed audio length
+- Switched from mp3_info to ffprobe for accurate duration
+- All 6 tests pass, output matches test file
 
 ## Plan
 
