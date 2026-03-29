@@ -81,7 +81,7 @@ Error scenarios:
 - `./srt_generator/lib/srt_formatter.dart` - SRT file formatting
 
 **Patterns/Libraries:**
-- Use `mp3_info` or `audio_metadata_extractor` package for MP3 duration
+- Use `mp3_info` package for MP3 duration
 - Use Dart's `File` class for file I/O
 - Use `RegExp` for timestamp parsing
 - Follow dart-create conventions for CLI structure
@@ -101,6 +101,7 @@ Unit tests for:
 - Line joining: `"Hello"` + `"World"` → `"Hello World"` (no ending punctuation)
 - Header preservation: `<h1>Title</h1>` + `Next line` → `[<h1>Title</h1>]`, `[Next line]` (not joined)
 - Line NOT joining: `"Hello."` + `"World"` → `["Hello."]`, next starts fresh
+- Character-count timing: 30 chars + 10 chars in 4-second span → 3 seconds + 1 second
 
 Integration test:
 - Run tool on `../examples/example` files and verify output matches expected format
