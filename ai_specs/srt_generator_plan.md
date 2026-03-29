@@ -15,17 +15,17 @@ Fix SRT generator timing mismatch. Generated timestamps don't match expected tes
 
 ### Phase 1: Debug Timing Mismatch
 
-- [ ] Analyze diff between generated and expected
-- [ ] Determine timing algorithm in expected file
-- [ ] Fix `srt_generator.dart` timing logic
-- [ ] Verify: `dart test` passes
+- [x] Analyze diff between generated and expected
+- [x] Determine timing algorithm in expected file
+- [x] Fix `srt_generator.dart` timing logic
+- [x] Verify: `dart test` passes
 
 ### Phase 2: Validate Against Test File
 
-- [ ] Run generator on example.md
-- [ ] Compare output to example_for_testing.srt
-- [ ] Fix any remaining mismatches
-- [ ] Verify: diff shows no differences
+- [x] Run generator on example.md
+- [x] Compare output to example_for_testing.srt
+- [x] Fix any remaining mismatches
+- [x] Verify: diff shows no differences
 
 ## Risks / Out of scope
 
