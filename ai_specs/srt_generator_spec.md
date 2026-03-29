@@ -41,7 +41,7 @@ Error flows:
 4. Joins current line with next line when current line does NOT end with `.!?` AND does NOT contain HTML header tags (<h1>, <h2>, <h3>, <h4>, <h5>, <h6>)
 5. Splits joined text into individual sentences by `.!?` punctuation, but preserves multiple consecutive dots (e.g., "e.g.", "Mr.", "...") and only splits on the last dot in a sequence
 6. Strips leading dashes (`-`) from text after splitting by punctuation
-7. Calculates timestamp for each sentence proportionally by word count within its line's time range - sentence duration is proportional to the number of words (e.g., 3 words and 1 word in a 4-second span = 3 seconds and 1 second)
+7. Calculates timestamp for each sentence proportionally by character count within its line's time range - sentence duration is proportional to the number of characters (e.g., 30 chars and 10 chars in a 4-second span = 3 seconds and 1 second)
 8. Converts all timestamps to SubRip format: `HH:MM:SS,mmm --> HH:MM:SS,mmm`
 9. Outputs properly formatted SRT file with sequential numbering
 

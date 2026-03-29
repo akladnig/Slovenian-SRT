@@ -65,16 +65,13 @@ class SrtGenerator {
       final lineEndMs = next?.timestampMs ?? totalDuration;
       final lineDuration = lineEndMs - lineStartMs;
 
-      final totalWords = sentences.fold<int>(
-        0,
-        (sum, s) => sum + s.split(RegExp(r'\s+')).length,
-      );
-      if (totalWords == 0) continue;
+      final totalChars = sentences.fold<int>(0, (sum, s) => sum + s.length);
+      if (totalChars == 0) continue;
 
       int accumulatedTime = 0;
       for (final sentence in sentences) {
-        final wordCount = sentence.split(RegExp(r'\s+')).length;
-        final sentenceDurationMs = (lineDuration * wordCount / totalWords)
+        final charCount = sentence.length;
+        final sentenceDurationMs = (lineDuration * charCount / totalChars)
             .round();
 
         result.add(
