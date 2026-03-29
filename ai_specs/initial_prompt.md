@@ -1,4 +1,4 @@
-Create a srt generator that works as a Dart CLI tool.
+reate a srt generator that works as a Dart CLI tool.
 
 Requirements:
 - Takes an input path base filename with no extension

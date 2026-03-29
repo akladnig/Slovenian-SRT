@@ -39,7 +39,7 @@ Error flows:
 2. Reads MP3 file and extracts duration in milliseconds
 3. Reads markdown file line by line, parsing timestamps in `MM:SS` format
 4. Joins current line with next line when current line does NOT end with `.!?`
-5. Splits joined text into individual sentences by `.!?` punctuation
+5. Splits joined text into individual sentences by `.!?` punctuation, but preserves multiple consecutive dots (e.g., "e.g.", "Mr.", "...") and only splits on the last dot in a sequence
 6. Strips leading dashes (`-`) from text after splitting by punctuation
 7. Calculates timestamp for each sentence proportionally between line start times
 8. Converts all timestamps to SubRip format: `HH:MM:SS,mmm --> HH:MM:SS,mmm`
@@ -96,6 +96,7 @@ Unit tests for:
 - Timestamp parsing: `00:06` → 6000ms
 - Timestamp conversion: 6000ms → `00:06,000`
 - Sentence splitting: `"Hello. World!"` → `["Hello.", "World!"]`
+- Multiple dots preserved: `"Hello... World."` → `["Hello...", "World."]`
 - Dash stripping: `"Hello. -World."` → `["Hello.", "World."]`
 - Line joining: `"Hello"` + `"World"` → `"Hello World"` (no ending punctuation)
 - Line NOT joining: `"Hello."` + `"World"` → `["Hello."]`, next starts fresh

@@ -77,12 +77,18 @@ class MarkdownParser {
       buffer.write(char);
 
       if (char == '.' || char == '!' || char == '?') {
-        final segment = buffer.toString().trim();
-        final stripped = _stripLeadingDash(segment);
-        if (stripped.isNotEmpty) {
-          result.add(stripped);
+        final nextChar = i + 1 < text.length ? text[i + 1] : '';
+        final hasMorePunctuation =
+            nextChar == '.' || nextChar == '!' || nextChar == '?';
+
+        if (!hasMorePunctuation) {
+          final segment = buffer.toString().trim();
+          final stripped = _stripLeadingDash(segment);
+          if (stripped.isNotEmpty) {
+            result.add(stripped);
+          }
+          buffer.clear();
         }
-        buffer.clear();
       }
     }
 
