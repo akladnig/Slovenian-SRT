@@ -50,7 +50,9 @@ class SrtGenerator {
 
       String text = current.text;
 
-      if (next != null && !_endsWithSentenceTerminator(text)) {
+      if (next != null &&
+          !_endsWithSentenceTerminator(text) &&
+          !_containsHeaderTag(text)) {
         text = '$text ${next.text}';
         i++;
       }
@@ -88,6 +90,10 @@ class SrtGenerator {
     return trimmed.endsWith('.') ||
         trimmed.endsWith('!') ||
         trimmed.endsWith('?');
+  }
+
+  bool _containsHeaderTag(String text) {
+    return RegExp(r'<h[1-6]', caseSensitive: false).hasMatch(text);
   }
 
   List<String> _splitByPunctuation(String text) {

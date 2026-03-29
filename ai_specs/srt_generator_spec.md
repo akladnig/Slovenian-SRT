@@ -38,7 +38,7 @@ Error flows:
 1. CLI accepts a single argument: base filename (path with no extension)
 2. Reads MP3 file and extracts duration in milliseconds
 3. Reads markdown file line by line, parsing timestamps in `MM:SS` format
-4. Joins current line with next line when current line does NOT end with `.!?`
+4. Joins current line with next line when current line does NOT end with `.!?` AND does NOT contain HTML header tags (<h1>, <h2>, <h3>, <h4>, <h5>, <h6>)
 5. Splits joined text into individual sentences by `.!?` punctuation, but preserves multiple consecutive dots (e.g., "e.g.", "Mr.", "...") and only splits on the last dot in a sequence
 6. Strips leading dashes (`-`) from text after splitting by punctuation
 7. Calculates timestamp for each sentence within its line's time range - each sentence in a multi-sentence line shares the line's duration equally (e.g., 2 sentences in a 4-second span = 2 seconds each)
@@ -99,6 +99,7 @@ Unit tests for:
 - Multiple dots preserved: `"Hello... World."` → `["Hello...", "World."]`
 - Dash stripping: `"Hello. -World."` → `["Hello.", "World."]`
 - Line joining: `"Hello"` + `"World"` → `"Hello World"` (no ending punctuation)
+- Header preservation: `<h1>Title</h1>` + `Next line` → `[<h1>Title</h1>]`, `[Next line]` (not joined)
 - Line NOT joining: `"Hello."` + `"World"` → `["Hello."]`, next starts fresh
 
 Integration test:
