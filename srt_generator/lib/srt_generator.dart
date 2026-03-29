@@ -44,26 +44,33 @@ class SrtGenerator {
 
     final result = <TimedSentence>[];
 
-    for (int i = 0; i < parsedLines.length; i++) {
+    int i = 0;
+    while (i < parsedLines.length) {
       final current = parsedLines[i];
-      final next = i + 1 < parsedLines.length ? parsedLines[i + 1] : null;
-
       String text = current.text;
+      int lineStartMs = current.timestampMs;
 
-      if (next != null &&
-          !_endsWithSentenceTerminator(text) &&
-          !_containsHeaderTag(text)) {
-        text = '$text ${next.text}';
-        i++;
+      int joinedUntilIdx = i;
+      int nextIdx = i + 1;
+      while (nextIdx < parsedLines.length &&
+          !_endsWithSentenceTerminator(parsedLines[joinedUntilIdx].text) &&
+          !_containsHeaderTag(parsedLines[joinedUntilIdx].text)) {
+        text = '$text ${parsedLines[nextIdx].text}';
+        joinedUntilIdx = nextIdx;
+        nextIdx++;
       }
 
+      int lineEndMs;
+      if (joinedUntilIdx + 1 < parsedLines.length) {
+        lineEndMs = parsedLines[joinedUntilIdx + 1].timestampMs;
+      } else {
+        lineEndMs = totalDuration;
+      }
+      int lineDuration = lineEndMs - lineStartMs;
+      if (lineDuration < 0) lineDuration = 0;
+
       final sentences = _splitByPunctuation(text);
-
       if (sentences.isEmpty) continue;
-
-      final lineStartMs = current.timestampMs;
-      final lineEndMs = next?.timestampMs ?? totalDuration;
-      final lineDuration = lineEndMs - lineStartMs;
 
       final totalChars = sentences.fold<int>(0, (sum, s) => sum + s.length);
       if (totalChars == 0) continue;
@@ -84,6 +91,8 @@ class SrtGenerator {
 
         accumulatedTime += sentenceDurationMs;
       }
+
+      i = nextIdx;
     }
 
     return result;
