@@ -38,24 +38,25 @@ Error flows:
 1. CLI accepts a single argument: base filename (path with no extension)
 2. Reads MP3 file and extracts duration in milliseconds
 3. Reads markdown file line by line, parsing timestamps in `MM:SS` format
-4. Joins current line with next line when current line does NOT end with `.!?` AND does NOT contain HTML header tags (<h1>, <h2>, <h3>, <h4>, <h5>, <h6>)
+4. Joins current line with next line when current line does NOT end with `.!?` AND does NOT contain HTML header tags. Header tags are stripped from output, keeping only inner content.
 5. Splits joined text into individual sentences by `.!?` punctuation, but preserves multiple consecutive dots (e.g., "e.g.", "Mr.", "...") and only splits on the last dot in a sequence
 6. Strips leading dashes (`-`) from text after splitting by punctuation
 7. Calculates timestamp for each sentence proportionally by character count within its line's time range - sentence duration is proportional to the number of characters (e.g., 30 chars and 10 chars in a 4-second span = 3 seconds and 1 second)
-8. Converts all timestamps to SubRip format: `HH:MM:SS,mmm --> HH:MM:SS,mmm`
-9. Outputs properly formatted SRT file with sequential numbering
+9. Converts all timestamps to SubRip format: `HH:MM:SS,mmm --> HH:MM:SS,mmm`
+10. Strips HTML header tags (<h1>-<h6>) from text, preserving inner content (e.g., "<h1>Title</h1>" → "Title")
+11. Outputs properly formatted SRT file with sequential numbering
 
 **Error Handling:**
-10. Missing input files: Exit with descriptive error message
-11. Malformed timestamps: Skip line, log warning, continue processing
-12. Audio read failure: Exit with error code 1
+12. Missing input files: Exit with descriptive error message
+13. Malformed timestamps: Skip line, log warning, continue processing
+14. Audio read failure: Exit with error code 1
 
 **Edge Cases:**
-13. Single line transcript: Process normally
-14. Line with no timestamp: Skip with warning
-15. Empty lines: Ignore
-16. Timestamp exceeds audio duration: Cap at audio duration
-17. Last line without subsequent timestamp: Use audio duration as end time
+15. Single line transcript: Process normally
+16. Line with no timestamp: Skip with warning
+17. Empty lines: Ignore
+18. Timestamp exceeds audio duration: Cap at audio duration
+19. Last line without subsequent timestamp: Use audio duration as end time
 </requirements>
 
 <boundaries>
@@ -99,7 +100,7 @@ Unit tests for:
 - Multiple dots preserved: `"Hello... World."` → `["Hello...", "World."]`
 - Dash stripping: `"Hello. -World."` → `["Hello.", "World."]`
 - Line joining: `"Hello"` + `"World"` → `"Hello World"` (no ending punctuation)
-- Header preservation: `<h1>Title</h1>` + `Next line` → `[<h1>Title</h1>]`, `[Next line]` (not joined)
+- Header tag stripping: `<h1>Title</h1>` + `Next line` → `["Title"]`, `["Next line"]` (not joined, tags stripped)
 - Line NOT joining: `"Hello."` + `"World"` → `["Hello."]`, next starts fresh
 - Character-count timing: 30 chars + 10 chars in 4-second span → 3 seconds + 1 second
 
