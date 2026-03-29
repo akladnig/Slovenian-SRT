@@ -3,7 +3,7 @@ Create a Dart CLI tool that generates SubRip (.srt) subtitle files from MP3 audi
 </goal>
 
 <background>
-Dart CLI tool for generating subtitle files. Uses the dart-create skill to scaffold the project in the `./cli` subfolder.
+Dart CLI tool for generating subtitle files. Uses the dart-create skill to scaffold the project in the `./srt_generator` subfolder.
 
 **Input files:**
 - `filename.mp3` - Audio file to extract duration
@@ -19,7 +19,7 @@ Dart CLI tool for generating subtitle files. Uses the dart-create skill to scaff
 
 <user_flows>
 Primary flow:
-1. User runs CLI with base filename: `dart run cli:generate myfile`
+1. User runs CLI with base filename: `dart run srt_generator myfile`
 2. Tool reads `myfile.mp3` and extracts audio duration
 3. Tool reads `myfile.md` and parses timestamps and text
 4. Tool processes lines: joins incomplete sentences, splits by punctuation
@@ -41,7 +41,7 @@ Error flows:
 4. Joins current line with next line when current line does NOT end with `.!?`
 5. Splits joined text into individual sentences by `.!?` punctuation, but preserves multiple consecutive dots (e.g., "e.g.", "Mr.", "...") and only splits on the last dot in a sequence
 6. Strips leading dashes (`-`) from text after splitting by punctuation
-7. Calculates timestamp for each sentence proportionally between line start times
+7. Calculates timestamp for each sentence within its line's time range - each sentence in a multi-sentence line shares the line's duration equally (e.g., 2 sentences in a 4-second span = 2 seconds each)
 8. Converts all timestamps to SubRip format: `HH:MM:SS,mmm --> HH:MM:SS,mmm`
 9. Outputs properly formatted SRT file with sequential numbering
 
@@ -72,8 +72,8 @@ Error scenarios:
 
 <implementation>
 **Files to create:**
-- `./cli/` - Dart project scaffolded via dart-create skill
-- `./cli/lib/main.dart` - Entry point with argument parsing
+- `./srt_generator/` - Dart project scaffolded via dart-create skill
+- `./srt_generator/bin/srt_generator.dart` - Entry point with argument parsing
 - `./cli/lib/srt_generator.dart` - Core SRT generation logic
 - `./cli/lib/audio_reader.dart` - MP3 duration extraction
 - `./cli/lib/markdown_parser.dart` - Markdown transcript parsing
