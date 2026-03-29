@@ -1,8 +1,17 @@
+import 'package:srt_generator/audio_reader.dart';
 import 'package:srt_generator/markdown_parser.dart';
 import 'package:srt_generator/timestamp_calculator.dart';
 import 'package:test/test.dart';
 
 void main() {
+  group('AudioReader', () {
+    test('example.mp3 duration is exactly 52352ms (0:00:52.352018)', () {
+      final reader = AudioReader();
+      final duration = reader.getDuration('../examples/example.mp3');
+      expect(duration, 52352);
+    });
+  });
+
   group('TimestampCalculator', () {
     test('parses MM:SS timestamp correctly', () {
       final calculator = TimestampCalculator();
