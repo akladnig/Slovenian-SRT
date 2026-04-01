@@ -1,5 +1,8 @@
+import 'dart:io';
+
 import 'package:srt_generator/audio_reader.dart';
 import 'package:srt_generator/markdown_parser.dart';
+import 'package:srt_generator/srt_generator.dart';
 import 'package:srt_generator/timestamp_calculator.dart';
 import 'package:test/test.dart';
 
@@ -56,6 +59,86 @@ void main() {
       final content = lines.join('\n');
 
       expect(content.contains('- World'), true);
+    });
+  });
+
+  group('SrtGenerator._splitByPunctuation', () {
+    test('splits text by punctuation', () {
+      final generator = SrtGenerator();
+      final result = generator.splitByPunctuation('Hello. World!');
+      expect(result, ['Hello.', 'World!']);
+    });
+
+    test('preserves multiple consecutive dots', () {
+      final generator = SrtGenerator();
+      final result = generator.splitByPunctuation('Hello... World.');
+      expect(result, ['Hello...', 'World.']);
+    });
+
+    test('strips leading dash from split segments', () {
+      final generator = SrtGenerator();
+      final result = generator.splitByPunctuation('Hello. - World.');
+      expect(result, ['Hello.', 'World.']);
+    });
+  });
+
+  group('SrtGenerator._endsWithSentenceTerminator', () {
+    test('detects sentence terminators', () {
+      final generator = SrtGenerator();
+      expect(generator.endsWithSentenceTerminator('Hello.'), true);
+      expect(generator.endsWithSentenceTerminator('Hello!'), true);
+      expect(generator.endsWithSentenceTerminator('Hello?'), true);
+      expect(generator.endsWithSentenceTerminator('Hello'), false);
+    });
+  });
+
+  group('SrtGenerator._containsHeaderTag', () {
+    test('detects header tags h1-h6', () {
+      final generator = SrtGenerator();
+      expect(generator.containsHeaderTag('<h1>Title</h1>'), true);
+      expect(generator.containsHeaderTag('<H2>Title</H2>'), true);
+      expect(generator.containsHeaderTag('No header'), false);
+    });
+  });
+
+  group('SrtGenerator._stripLeadingDash', () {
+    test('strips leading dash', () {
+      final generator = SrtGenerator();
+      expect(generator.stripLeadingDash('- Hello'), 'Hello');
+      expect(generator.stripLeadingDash('  - Hello'), 'Hello');
+      expect(generator.stripLeadingDash('Hello'), 'Hello');
+    });
+  });
+
+  group('SrtGenerator._calculateTimings', () {
+    test('character-count proportional timing', () {
+      final generator = SrtGenerator();
+      final lines = [
+        ParsedLine(timestampMs: 0, text: 'Hello... World.'),
+      ];
+      final result = generator.calculateTimings(lines, 4000);
+
+      expect(result.length, 2);
+      final totalChars = 'Hello...'.length + 'World.'.length;
+      final expectedFirst = (4000 * 'Hello...'.length / totalChars).round();
+      expect(result[0].endMs - result[0].startMs, expectedFirst);
+    });
+  });
+
+  group('Integration', () {
+    test('generated SRT matches example_for_testing.srt', () {
+      final generator = SrtGenerator();
+      final outputPath = generator.generate('../examples/example');
+      final generatedFile = File(outputPath);
+      final expectedFile = File('test/example_for_testing.srt');
+
+      expect(generatedFile.existsSync(), true);
+      expect(
+        generatedFile.readAsStringSync(),
+        expectedFile.readAsStringSync(),
+      );
+
+      generatedFile.deleteSync();
     });
   });
 }

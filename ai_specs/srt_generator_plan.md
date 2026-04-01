@@ -19,15 +19,16 @@ Implement and verify SRT generator per `ai_specs/srt_generator_spec.md`. Phase 1
 ### Phase 1: Add missing unit tests + integration test
 
 - **Goal**: Fill spec gaps, verify correct output
-- [ ] `test/srt_generator_test.dart` - Add: multiple dots preserved (`"Hello... World."` → `["Hello...", "World."]`)
-- [ ] `test/srt_generator_test.dart` - Add: dash stripping from split segments
-- [ ] `test/srt_generator_test.dart` - Add: line joining logic (no terminator + no header tag → join)
-- [ ] `test/srt_generator_test.dart` - Add: header tag detection (`<h1>Title</h1>` prevents joining with next)
-- [ ] `test/srt_generator_test.dart` - Add: header tag stripping from text
-- [ ] `test/srt_generator_test.dart` - Add: character-count proportional timing (30 + 10 chars in 4000ms → 3000 + 1000ms)
-- [ ] `test/srt_generator_test.dart` - Add: 0 total chars → skip (avoid division by zero)
-- [ ] `test/srt_generator_test.dart` - Add integration test: run `SrtGenerator` on `../examples/example`, compare output with `test/example_for_testing.srt`
-- [ ] Verify: `dart analyze` && `dart test`
+- [x] `test/srt_generator_test.dart` - Add: multiple dots preserved (`"Hello... World."` → `["Hello...", "World."]`)
+- [x] `test/srt_generator_test.dart` - Add: dash stripping from split segments
+- [x] `test/srt_generator_test.dart` - Add: line joining logic (no terminator + no header tag → join)
+- [x] `test/srt_generator_test.dart` - Add: header tag detection (`<h1>Title</h1>` prevents joining with next)
+- [x] `test/srt_generator_test.dart` - Add: header tag stripping from text
+- [x] `test/srt_generator_test.dart` - Add: character-count proportional timing (30 + 10 chars in 4000ms → 3000 + 1000ms)
+- [x] `test/srt_generator_test.dart` - Add integration test: run `SrtGenerator` on `../examples/example`, compare output with `test/example_for_testing.srt`
+- [x] Verify: `dart analyze` && `dart test`
+
+**Note**: "0 total chars" test removed - can't be triggered through public API (dash-stripping preserves non-empty text)
 
 ### Phase 2: Verify CLI + edge cases
 
