@@ -107,7 +107,6 @@ Error scenarios:
 - Use `ffprobe` (from ffmpeg) for MP3/M4A duration extraction via `Process.runSync`
   - Required because `mp3_info` package does not support VBR (Variable Bit Rate) MP3s
 - Use `ffmpeg` for audio extraction from MOV files: `ffmpeg -i input.mov -vn -acodec copy output.m4a`
-- Note: `mp3_info` package is listed in pubspec.yaml but NOT used
 - Use Dart's `File` class for file I/O
 - Use `RegExp` for timestamp parsing
 - Follow dart-create conventions for CLI structure
