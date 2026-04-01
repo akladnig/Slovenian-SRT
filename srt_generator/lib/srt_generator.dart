@@ -23,7 +23,7 @@ class SrtGenerator {
 
     final mdFile = File(mdPath);
     if (!mdFile.existsSync()) {
-      throw FileSystemException('Transcript file not found', mdPath);
+      throw FileSystemException('Transcript file not found: $mdPath', mdPath);
     }
 
     final totalDuration = _audioReader.getDuration(audioPath);
@@ -49,8 +49,8 @@ class SrtGenerator {
 
     if (!mp3Exists && !m4aExists && !movExists) {
       throw FileSystemException(
-        'Audio file not found',
-        '$mp3Path, $m4aPath, or $movPath',
+        'Audio file not found: $mp3Path, $m4aPath, or $movPath',
+        mp3Path,
       );
     }
 

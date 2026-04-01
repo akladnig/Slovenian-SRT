@@ -33,9 +33,9 @@ Implement and verify SRT generator per `ai_specs/srt_generator_spec.md`. Phase 1
 ### Phase 2: Verify CLI + edge cases
 
 - **Goal**: CLI error handling per spec
-- [ ] `bin/srt_generator.dart` - Verify error message format matches spec (e.g., "Audio file not found: {path}.mp3, {path}.m4a, or {path}.mov")
-- [ ] Run tool with missing files and verify error messages + exit code 1
-- [ ] Verify: `dart analyze` && `dart test`
+- [x] `bin/srt_generator.dart` - Verify error message format matches spec (e.g., "Audio file not found: {path}.mp3, {path}.m4a, or {path}.mov")
+- [x] Run tool with missing files and verify error messages + exit code 1
+- [x] Verify: `dart analyze` && `dart test`
 
 ## Risks / Out of scope
 
