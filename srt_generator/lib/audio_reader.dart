@@ -1,10 +1,10 @@
 import 'dart:io';
 
 class AudioReader {
-  int getDuration(String mp3Path) {
-    final file = File(mp3Path);
+  int getDuration(String audioPath) {
+    final file = File(audioPath);
     if (!file.existsSync()) {
-      throw FileSystemException('Audio file not found', mp3Path);
+      throw FileSystemException('Audio file not found', audioPath);
     }
 
     final result = Process.runSync(
@@ -16,7 +16,7 @@ class AudioReader {
         'format=duration',
         '-of',
         'csv=p=0',
-        mp3Path,
+        audioPath,
       ],
     );
 

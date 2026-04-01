@@ -133,8 +133,8 @@ Unit tests for:
 - Character-count timing edge case: 0 total chars → skip (avoid division by zero)
 
 Integration test:
-- Run tool on `../examples/example` files and verify output matches expected format
-- Compare generated SRT with `../srt_generator/test/example_for_testing.srt` for correctness
+- Run `dart run srt_generator ../examples/example` from `srt_generator/` directory
+- Generated `../examples/example.srt` must match `test/example_for_testing.srt` byte-for-byte
 - Audio duration of `../examples/example.mp3` is exactly 52352ms
 
 MOV extraction test:
